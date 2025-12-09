@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>TipsterChamps – Fullscreen</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<style>
-    body {
-        background: #070817;
-        margin: 0;
-        height: 100vh;
-        width: 100vw;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
+  <meta charset="UTF-8" />
+  <title>TipsterChamps</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    .logo {
-        width: 100vw;
-        height: 100vh;
-        object-fit: contain;   /* Mantiene proporciones del logo */
+    /* FONDO CON DEGRADADO OFICIAL */
+    body {
+      min-height: 100vh;
+      width: 100vw;
+      overflow: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #40037a 0%, #270552 100%);
+      font-family: Arial, sans-serif;
     }
-</style>
+
+    /* CONTENEDOR DEL LOGO */
+    .logo-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      padding: 16px;
+    }
+
+    .logo-wrapper img {
+      width: min(80vw, 900px); /* grande en desktop */
+      height: auto;
+      display: block;
+    }
+
+    /* AJUSTE PARA CELULARES */
+    @media (max-width: 768px) {
+      .logo-wrapper img {
+        width: 90vw; /* que ocupe casi toda la pantalla en móviles */
+      }
+    }
+  </style>
 </head>
 <body>
 
-    <img src="logo.png" class="logo" alt="TipsterChamps Logo">
+  <div class="logo-wrapper">
+    <img src="logo-tipsterchamps.png" alt="TipsterChamps logo" />
+  </div>
 
 </body>
 </html>

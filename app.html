@@ -2,149 +2,811 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>TipsterChamps – Demo</title>
+  <title>TipsterChamps App</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #2a0d57, #4b1aa1);
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 40px 20px;
+    :root {
+      --bg-main: #120527;
+      --bg-card: rgba(17, 6, 40, 0.92);
+      --accent: #ffd400;
+      --accent-soft: #fce96c;
+      --text-main: #ffffff;
+      --text-muted: #c7c4e0;
+      --border-soft: rgba(255,255,255,0.08);
+      --danger: #ff4b81;
     }
 
-    h1 {
-      font-size: 32px;
-      margin-bottom: 20px;
-      text-align: center;
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+        Arial, sans-serif;
+      background: radial-gradient(circle at top left, #3c1697 0, #120527 45%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* NAVBAR */
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border-soft);
+      backdrop-filter: blur(16px);
+      background: linear-gradient(
+        90deg,
+        rgba(10, 3, 23, 0.96),
+        rgba(25, 7, 60, 0.9)
+      );
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
       font-weight: 900;
-      letter-spacing: 1px;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      font-size: 14px;
+    }
+
+    .logo-icon {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 20%, #ffe066, #f49f0a);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      color: #541389;
+      font-weight: 900;
+    }
+
+    nav {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      padding: 8px 14px;
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: 0.18s;
+    }
+
+    .nav-btn.active {
+      border-color: var(--accent);
+      color: var(--text-main);
+      background: rgba(255, 212, 0, 0.08);
+    }
+
+    .nav-btn:hover {
+      color: var(--text-main);
+      border-color: rgba(255, 212, 0, 0.4);
+    }
+
+    .user-pill {
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.06);
+      font-size: 12px;
+      color: var(--accent-soft);
+      max-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* LAYOUT */
+
+    main {
+      flex: 1;
+      padding: 18px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .shell {
+      width: 100%;
+      max-width: 1100px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    @media (max-width: 850px) {
+      .shell {
+        grid-template-columns: minmax(0, 1fr);
+      }
     }
 
     .card {
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      padding: 25px;
-      border-radius: 15px;
-      width: 100%;
-      max-width: 500px;
-      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      background: var(--bg-card);
+      border-radius: 20px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border-soft);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
     }
 
-    .form-group {
+    .card-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .badge-pill {
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--text-muted);
+    }
+
+    .subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* LOGIN */
+
+    .login-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .input-row {
       display: flex;
       gap: 10px;
-      margin-bottom: 15px;
+      margin-top: 8px;
+      flex-wrap: wrap;
     }
 
-    input {
-      flex: 1;
-      padding: 12px;
+    input,
+    select {
+      padding: 10px 12px;
       border-radius: 10px;
-      border: none;
-      outline: none;
-      font-size: 15px;
+      border: 1px solid var(--border-soft);
+      background: rgba(7, 2, 17, 0.9);
+      color: var(--text-main);
+      font-size: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    input::placeholder {
+      color: rgba(199, 196, 224, 0.75);
     }
 
     button {
-      background: #ffd400;
-      color: black;
+      border-radius: 999px;
       border: none;
-      padding: 12px 20px;
-      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
       cursor: pointer;
-      font-weight: bold;
-      transition: 0.2s;
     }
 
-    button:hover {
-      background: #fce96c;
+    .btn-primary {
+      background: var(--accent);
+      color: #2b1900;
+      padding: 10px 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      white-space: nowrap;
+      min-width: 120px;
     }
 
-    ul {
-      list-style: none;
-      margin-top: 15px;
-      padding: 0;
+    .btn-primary:hover {
+      background: var(--accent-soft);
     }
 
-    li {
-      background: rgba(255, 255, 255, 0.15);
-      padding: 12px;
+    .tagline {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* MARKETS */
+
+    .markets-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 6px;
+    }
+
+    .market-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 0.8fr));
+      gap: 8px;
+      padding: 10px 10px;
+      border-radius: 14px;
+      background: rgba(7, 2, 17, 0.9);
+      border: 1px solid var(--border-soft);
+      align-items: center;
+    }
+
+    @media (max-width: 700px) {
+      .market-row {
+        grid-template-columns: minmax(0, 1.5fr) repeat(2, minmax(0, 0.9fr));
+        grid-template-rows: auto auto;
+      }
+
+      .market-meta {
+        grid-column: 1 / -1;
+      }
+    }
+
+    .market-main {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 14px;
+    }
+
+    .market-league {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-muted);
+    }
+
+    .market-teams {
+      font-weight: 600;
+    }
+
+    .market-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pill-time {
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 11px;
+    }
+
+    .outcome-btn {
+      border-radius: 12px;
+      padding: 8px 10px;
+      background: rgba(37, 18, 78, 0.9);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      font-size: 12px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      transition: 0.16s;
+    }
+
+    .outcome-btn strong {
+      font-size: 13px;
+    }
+
+    .outcome-btn span {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .outcome-btn:hover {
+      border-color: var(--accent);
+      background: rgba(58, 26, 120, 0.95);
+    }
+
+    /* PICK PANEL */
+
+    .pick-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pick-selected {
+      padding: 10px 12px;
+      border-radius: 12px;
+      background: rgba(7, 2, 17, 0.9);
+      border: 1px solid var(--border-soft);
+      font-size: 13px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .pick-selected span {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .stake-row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .stake-row input {
+      max-width: 120px;
+    }
+
+    .helper-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .error-msg {
+      color: var(--danger);
+      font-size: 12px;
+      display: none;
+    }
+
+    /* MY PICKS */
+
+    .picks-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 6px;
+      max-height: 260px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .pick-item {
+      font-size: 12px;
       border-radius: 10px;
-      margin-bottom: 10px;
+      padding: 8px 10px;
+      background: rgba(7, 2, 17, 0.95);
+      border: 1px solid var(--border-soft);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .pick-item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pick-user {
+      font-weight: 600;
+    }
+
+    .pick-market {
+      color: var(--text-muted);
+    }
+
+    .pick-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* VIEW HANDLING */
+
+    [data-view] {
+      display: none;
+    }
+
+    [data-view].active {
+      display: block;
     }
   </style>
 </head>
 
 <body>
-  <h1>TipsterChamps – Demo de Picks ⚽🔥</h1>
-
-  <div class="card">
-    <form id="pick-form">
-      <div class="form-group">
-        <input type="text" id="username" placeholder="Tu nombre" required />
+  <header>
+    <div class="logo">
+      <div class="logo-icon">TC</div>
+      <div>
+        <div>TIPSTERCHAMPS</div>
+        <div style="font-size:10px; color:var(--text-muted); text-transform:none;">
+          Sports Prediction Playground
+        </div>
       </div>
+    </div>
 
-      <div class="form-group">
-        <input type="text" id="team" placeholder="Equipo elegido" required />
-      </div>
+    <nav>
+      <button class="nav-btn active" data-nav="markets">Mercados</button>
+      <button class="nav-btn" data-nav="mypicks">Mis picks</button>
+      <button class="nav-btn" data-nav="login">Login</button>
+      <div class="user-pill" id="user-pill">Invitado</div>
+    </nav>
+  </header>
 
-      <button type="submit">Guardar pick</button>
-    </form>
+  <main>
+    <div class="shell">
+      <!-- COLUMNA IZQUIERDA: MARKETS / MIS PICKS LISTA COMPLETA -->
+      <section class="card" data-view="markets">
+        <div class="card-title-row">
+          <div>
+            <div class="card-title">Mercados en vivo (demo)</div>
+            <div class="subtitle">Probabilidades estimadas estilo Polymarket</div>
+          </div>
+          <div class="badge-pill">DEMO</div>
+        </div>
 
-    <h3 style="margin-top:20px;">Picks guardados</h3>
-    <ul id="picks-list"></ul>
-  </div>
+        <div class="markets-list" id="markets-list">
+          <!-- Se llena desde JS -->
+        </div>
+      </section>
 
-  <!-- SDK Supabase -->
+      <section class="card" data-view="mypicks">
+        <div class="card-title-row">
+          <div>
+            <div class="card-title">Mis picks</div>
+            <div class="subtitle">
+              Picks guardados en Supabase (tabla <code>picks_demo</code>)
+            </div>
+          </div>
+        </div>
+        <div class="picks-list" id="picks-list"></div>
+      </section>
+
+      <!-- COLUMNA DERECHA: LOGIN + PANEL DE PICK -->
+      <section class="card" data-view="login">
+        <div class="card-title-row">
+          <div>
+            <div class="card-title">Login rápido</div>
+            <div class="subtitle">
+              Solo para demo: elige un nickname y vamos.
+            </div>
+          </div>
+        </div>
+
+        <div class="login-wrapper">
+          <label for="nickname" style="font-size:13px;">Nickname</label>
+          <div class="input-row">
+            <input
+              type="text"
+              id="nickname"
+              placeholder="Ej. SinthyaTC, YersonPicks…"
+            />
+            <button class="btn-primary" id="btn-login">Entrar</button>
+          </div>
+          <div class="tagline">
+            Más adelante aquí conectamos login real de Supabase (email / wallet / etc).
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-title-row">
+          <div>
+            <div class="card-title">Crear pick</div>
+            <div class="subtitle">
+              Elige un mercado de la izquierda y selecciona tu lado.
+            </div>
+          </div>
+        </div>
+
+        <div class="pick-panel">
+          <div class="pick-selected" id="selected-info">
+            <strong>Ningún mercado seleccionado.</strong>
+            <span>Haz clic en un mercado y luego en un lado para pre-cargar el pick.</span>
+          </div>
+
+          <div class="stake-row">
+            <input
+              type="number"
+              id="stake"
+              min="1"
+              step="1"
+              placeholder="Stake (unidades)"
+            />
+            <button class="btn-primary" id="btn-save-pick">Guardar pick</button>
+          </div>
+
+          <div class="helper-row">
+            <span id="expected-return">Retorno esperado: –</span>
+            <span style="color: var(--accent-soft);">Demo sin dinero real 💜</span>
+          </div>
+
+          <div class="error-msg" id="error-msg"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- ========================= JS APP ========================= -->
   <script type="module">
+    // ==================== SUPABASE ====================
+    // Sustituye estas dos constantes por tus datos reales de Supabase
+    const SUPABASE_URL = 'TU_SUPABASE_URL_AQUI';
+    const SUPABASE_ANON_KEY = 'TU_SUPABASE_ANON_KEY_AQUI';
+
     import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
-
-    const SUPABASE_URL = 'TU_URL_AQUI';
-    const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';
-
     const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-    const form = document.getElementById('pick-form');
-    const list = document.getElementById('picks-list');
+    // ==================== ESTADO GLOBAL ====================
+    let currentUser = 'Invitado';
+    let selectedMarket = null;
+    let selectedSide = null;
+
+    const marketsDemo = [
+      {
+        id: 1,
+        league: 'NBA',
+        teams: 'Lakers vs. Nuggets',
+        time: 'Hoy 20:30',
+        outcomes: [
+          { label: 'Lakers', prob: 0.55, odds: 1.82 },
+          { label: 'Nuggets', prob: 0.45, odds: 2.10 },
+          { label: 'Over 220.5', prob: 0.52, odds: 1.92 },
+        ],
+      },
+      {
+        id: 2,
+        league: 'NFL',
+        teams: 'Chiefs vs. Ravens',
+        time: 'Dom 16:05',
+        outcomes: [
+          { label: 'Chiefs', prob: 0.58, odds: 1.72 },
+          { label: 'Ravens', prob: 0.42, odds: 2.25 },
+          { label: 'Total TDs +5.5', prob: 0.50, odds: 2.0 },
+        ],
+      },
+      {
+        id: 3,
+        league: 'La Liga',
+        teams: 'Real Madrid vs. Girona',
+        time: 'Sáb 14:00',
+        outcomes: [
+          { label: 'Real Madrid', prob: 0.68, odds: 1.55 },
+          { label: 'Empate', prob: 0.18, odds: 4.6 },
+          { label: 'Girona', prob: 0.14, odds: 6.2 },
+        ],
+      },
+    ];
+
+    // ==================== ELEMENTOS ====================
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const views = document.querySelectorAll('[data-view]');
+    const userPill = document.getElementById('user-pill');
+    const marketsListEl = document.getElementById('markets-list');
+    const picksListEl = document.getElementById('picks-list');
+
+    const nicknameInput = document.getElementById('nickname');
+    const btnLogin = document.getElementById('btn-login');
+
+    const selectedInfoEl = document.getElementById('selected-info');
+    const stakeInput = document.getElementById('stake');
+    const btnSavePick = document.getElementById('btn-save-pick');
+    const expectedReturnEl = document.getElementById('expected-return');
+    const errorMsgEl = document.getElementById('error-msg');
+
+    // ==================== NAVEGACIÓN ====================
+    function setView(view) {
+      views.forEach((v) => {
+        if (!v.dataset.view) return;
+        v.classList.toggle('active', v.dataset.view === view);
+      });
+
+      navButtons.forEach((btn) => {
+        btn.classList.toggle('active', btn.dataset.nav === view);
+      });
+    }
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.nav;
+        setView(target);
+        if (target === 'mypicks') {
+          loadPicks();
+        }
+      });
+    });
+
+    // Vista inicial
+    setView('markets');
+
+    // ==================== RENDER MARKETS ====================
+    function renderMarkets() {
+      marketsListEl.innerHTML = '';
+
+      marketsDemo.forEach((market) => {
+        const row = document.createElement('div');
+        row.className = 'market-row';
+
+        const main = document.createElement('div');
+        main.className = 'market-main';
+        main.innerHTML = `
+          <div class="market-league">${market.league}</div>
+          <div class="market-teams">${market.teams}</div>
+          <div class="market-meta">
+            <span class="pill-time">${market.time}</span>
+            <span>Market #${market.id}</span>
+          </div>
+        `;
+
+        row.appendChild(main);
+
+        market.outcomes.forEach((o, index) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'outcome-btn';
+          btn.innerHTML = `
+            <strong>${o.label}</strong>
+            <span>${(o.prob * 100).toFixed(0)}% • cuota ${o.odds.toFixed(2)}</span>
+          `;
+          btn.addEventListener('click', () =>
+            selectOutcome(market, index)
+          );
+          row.appendChild(btn);
+        });
+
+        marketsListEl.appendChild(row);
+      });
+    }
+
+    renderMarkets();
+
+    // ==================== SELECCIÓN DE PICK ====================
+    function selectOutcome(market, outcomeIndex) {
+      selectedMarket = market;
+      selectedSide = market.outcomes[outcomeIndex];
+      errorMsgEl.style.display = 'none';
+
+      selectedInfoEl.innerHTML = `
+        <strong>${market.league} – ${market.teams}</strong>
+        <span>Lado: <b>${selectedSide.label}</b></span>
+        <span>Probabilidad: ${(selectedSide.prob * 100).toFixed(1)}% • cuota ${
+        selectedSide.odds
+      }</span>
+      `;
+
+      updateExpectedReturn();
+    }
+
+    function updateExpectedReturn() {
+      const stake = Number(stakeInput.value || 0);
+      if (!selectedSide || !stake) {
+        expectedReturnEl.textContent = 'Retorno esperado: –';
+        return;
+      }
+      const payout = stake * selectedSide.odds;
+      const ev =
+        stake * (selectedSide.prob * selectedSide.odds - (1 - selectedSide.prob));
+      expectedReturnEl.textContent =
+        'Retorno potencial: ' +
+        payout.toFixed(2) +
+        ' • EV aprox: ' +
+        ev.toFixed(2);
+    }
+
+    stakeInput.addEventListener('input', updateExpectedReturn);
+
+    // ==================== LOGIN DEMO ====================
+    btnLogin.addEventListener('click', () => {
+      const nick = nicknameInput.value.trim();
+      if (!nick) return;
+      currentUser = nick;
+      userPill.textContent = nick;
+      nicknameInput.value = '';
+    });
+
+    // ==================== SUPABASE: GUARDAR Y CARGAR PICKS ====================
+    async function savePick() {
+      errorMsgEl.style.display = 'none';
+      const stake = Number(stakeInput.value || 0);
+
+      if (!selectedMarket || !selectedSide) {
+        errorMsgEl.textContent = 'Primero elige un mercado y un lado.';
+        errorMsgEl.style.display = 'block';
+        return;
+      }
+      if (!stake || stake <= 0) {
+        errorMsgEl.textContent = 'Ingresa un stake válido (número mayor a 0).';
+        errorMsgEl.style.display = 'block';
+        return;
+      }
+
+      const payload = {
+        user_name: currentUser,
+        market: `${selectedMarket.league} – ${selectedMarket.teams}`,
+        side: selectedSide.label,
+        odds: selectedSide.odds,
+        stake,
+      };
+
+      const { error } = await supabase.from('picks_demo').insert([payload]);
+
+      if (error) {
+        console.error(error);
+        errorMsgEl.textContent = 'Error guardando pick en Supabase.';
+        errorMsgEl.style.display = 'block';
+        return;
+      }
+
+      stakeInput.value = '';
+      updateExpectedReturn();
+      loadPicks();
+      setView('mypicks');
+    }
+
+    btnSavePick.addEventListener('click', savePick);
 
     async function loadPicks() {
+      picksListEl.innerHTML = '<div style="font-size:12px;color:var(--text-muted);">Cargando…</div>';
+
       const { data, error } = await supabase
         .from('picks_demo')
         .select('*')
-        .order('created_at', { ascending: false });
+        .order('created_at', { ascending: false })
+        .limit(50);
 
-      if (!error) {
-        list.innerHTML = '';
-        data.forEach(pick => {
-          const li = document.createElement('li');
-          li.textContent = `${pick.user_name} eligió: ${pick.team}`;
-          list.appendChild(li);
-        });
+      if (error) {
+        console.error(error);
+        picksListEl.innerHTML =
+          '<div style="font-size:12px;color:var(--danger);">Error cargando picks.</div>';
+        return;
       }
+
+      if (!data || data.length === 0) {
+        picksListEl.innerHTML =
+          '<div style="font-size:12px;color:var(--text-muted);">Todavía no hay picks.</div>';
+        return;
+      }
+
+      picksListEl.innerHTML = '';
+      data.forEach((p) => {
+        const item = document.createElement('div');
+        item.className = 'pick-item';
+
+        const header = document.createElement('div');
+        header.className = 'pick-item-header';
+        header.innerHTML = `
+          <span class="pick-user">${p.user_name}</span>
+          <span class="pick-market">${p.market || ''}</span>
+        `;
+
+        const meta = document.createElement('div');
+        meta.className = 'pick-meta';
+        meta.innerHTML = `
+          <span>${p.side} @ ${Number(p.odds).toFixed(2)}</span>
+          <span>Stake: ${p.stake}u</span>
+        `;
+
+        item.appendChild(header);
+        item.appendChild(meta);
+        picksListEl.appendChild(item);
+      });
     }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const user_name = document.getElementById('username').value;
-      const team = document.getElementById('team').value;
-
-      const { error } = await supabase
-        .from('picks_demo')
-        .insert([{ user_name, team }]);
-
-      if (!error) {
-        form.reset();
-        loadPicks();
-      }
-    });
-
-    loadPicks();
   </script>
 </body>
 </html>
